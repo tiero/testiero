@@ -6,6 +6,7 @@ const Web3 = require('web3')
 class testiero {
   constructor(provider) {
     this.web3 = new Web3(new Web3.providers.HttpProvider(provider));
+    this.deployer = this.web3.eth.accounts.privateKeyToAccount('0x' + privKey).address
   }
 
   sendSigned = (txData, privKey) => {
@@ -31,7 +32,7 @@ class testiero {
   }
   
   
-  deploy = (output, args) => {
+  deploy = (output, args, {}) => {
     const { abi, bytecode, contract } = output
     // get the number of transactions sent so far so we can create a fresh nonce
     return new Promise((resolve, reject) =>
@@ -42,7 +43,7 @@ class testiero {
           arguments: args,
           gasLimit: this.web3.utils.toHex(1500000),
           gasPrice: this.web3.utils.toHex(10e9), // 10 Gwei
-          from: addressFrom,
+          from: deployer,
         })).then((result) => {
           console.log('txHash', result.transactionHash)
           return result.contractAddress

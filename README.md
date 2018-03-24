@@ -1,6 +1,5 @@
-# tesTiero
+# testiero
 ultra-opinionated Solidity testing library
-
 
 ### Setup
 
@@ -22,16 +21,17 @@ contract MyContract {
 In our Javascript we do 
 
 ```javascript
-const { compile, deploy } = require('testiero')
+
+const Testiero = require('testiero')
+const testiero = new Testiero('https://ropsten.infura.io/<apiKey>')
 
 //compile(name, file, contract)
-const output = compile('MyContractFile.sol', fs.readFileSync('<path>'), 'MyContract')
+const output = testiero.compile('MyContractFile.sol', fs.readFileSync('<path>'), 'MyContract')
 
 //deploy(output, constructorArguments)
-deploy(output, [300000,"0x123.."])
+testiero.deploy(output, [300000,"0x123.."])
 .then(address => {
   console.log(`deployed contract at address ${address}`)
-  
 })
 .catch(console.error)
 
