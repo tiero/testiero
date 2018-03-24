@@ -9,7 +9,7 @@ class testiero {
     this.deployer = this.web3.eth.accounts.privateKeyToAccount('0x' + privKey).address
   }
 
-  sendSigned = (txData, privKey) => {
+  sendSigned(txData, privKey) {
     return new Promise((resolve, reject) => {
       if (!privKey) reject('Missing private key')
       const privateKey = new Buffer(privKey, 'hex')
@@ -23,7 +23,7 @@ class testiero {
     })
   }
   
-  compile = (name, file, contract) => {
+  compile(name, file, contract) {
     const input = { [name]: file }
     const compiledContract = solc.compile({ sources: input })
     const abi = JSON.parse(compiledContract.contracts[`${name}:${contract}`].interface)
@@ -32,7 +32,7 @@ class testiero {
   }
   
   
-  deploy = (output, args, {}) => {
+  deploy(output, args, {}) {
     const { abi, bytecode, contract } = output
     // get the number of transactions sent so far so we can create a fresh nonce
     return new Promise((resolve, reject) =>
