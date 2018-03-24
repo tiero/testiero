@@ -3,7 +3,7 @@ const solc = require('solc')
 // Connect to local Ethereum node
 const Web3 = require('web3')
 
-module.exports = class testiero {
+class testiero {
   constructor(provider) {
     this.web3 = new Web3(new Web3.providers.HttpProvider(provider));
   }
@@ -16,7 +16,7 @@ module.exports = class testiero {
       // of buffering and serializing the transaction for web3.
       const transaction = new Tx(txData).sign(privateKey)
       const serializedTx = transaction.serialize().toString('hex')
-      web3.eth.sendSignedTransaction('0x' + serializedTx)
+      this.web3.eth.sendSignedTransaction('0x' + serializedTx)
         .then(resolve)
         .catch(reject)
     })
@@ -35,13 +35,13 @@ module.exports = class testiero {
     const { abi, bytecode, contract } = output
     // get the number of transactions sent so far so we can create a fresh nonce
     return new Promise((resolve, reject) =>
-      web3.eth.getTransactionCount(addressFrom)
+      this.web3.eth.getTransactionCount(addressFrom)
         .then(txCount => sendSigned({
-          nonce: web3.utils.toHex(Number(txCount)),
+          nonce: this.web3.utils.toHex(Number(txCount)),
           data: bytecode,
           arguments: args,
-          gasLimit: web3.utils.toHex(1500000),
-          gasPrice: web3.utils.toHex(10e9), // 10 Gwei
+          gasLimit: this.web3.utils.toHex(1500000),
+          gasPrice: this.web3.utils.toHex(10e9), // 10 Gwei
           from: addressFrom,
         })).then((result) => {
           console.log('txHash', result.transactionHash)
@@ -52,3 +52,6 @@ module.exports = class testiero {
     )
   }
 }
+
+
+module.exports = testiero
