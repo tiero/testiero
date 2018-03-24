@@ -43,10 +43,6 @@ const deploy = (output, args) => {
         console.log('txHash', result.transactionHash)
         return result.contractAddress
       })
-      .then((address) => {
-        console.log(`deployed contract ${contract} at address ${address}`)
-        return address
-      })
       .then(resolve)
       .catch(reject)
   )
