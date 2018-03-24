@@ -6,8 +6,8 @@ const Web3 = require('web3')
 class testiero {
   constructor(provider, privateKey) {
     this.web3 = new Web3(new Web3.providers.HttpProvider(provider))
+    this.deployer = this.web3.eth.accounts.privateKeyToAccount('0x' + privateKey).address
     this.privateKey = privateKey
-    this.deployer = this.web3.eth.accounts.privateKeyToAccount('0x' + privKey).address
   }
 
   sendSigned(txData) {
