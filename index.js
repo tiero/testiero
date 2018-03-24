@@ -4,18 +4,19 @@ const solc = require('solc')
 const Web3 = require('web3')
 
 class testiero {
-  constructor(provider) {
-    this.web3 = new Web3(new Web3.providers.HttpProvider(provider));
+  constructor(provider, privateKey) {
+    this.web3 = new Web3(new Web3.providers.HttpProvider(provider))
+    this.privateKey = privateKey
     this.deployer = this.web3.eth.accounts.privateKeyToAccount('0x' + privKey).address
   }
 
-  sendSigned(txData, privKey) {
+  sendSigned(txData) {
     return new Promise((resolve, reject) => {
-      if (!privKey) reject('Missing private key')
-      const privateKey = new Buffer(privKey, 'hex')
+      if (!this.privateKey) reject('Missing private key')
+      this.privateKey = new Buffer(this.privateKey, 'hex')
       // Signs the given transaction data and sends it. Abstracts some of the details 
       // of buffering and serializing the transaction for web3.
-      const transaction = new Tx(txData).sign(privateKey)
+      const transaction = new Tx(txData).sign(this.privateKey)
       const serializedTx = transaction.serialize().toString('hex')
       this.web3.eth.sendSignedTransaction('0x' + serializedTx)
         .then(resolve)
