@@ -1,6 +1,6 @@
 {
   "name": "testiero",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "solidity testing library",
   "main": "index.js",
   "scripts": {
