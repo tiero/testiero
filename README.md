@@ -23,12 +23,14 @@ In our Javascript we do
 ```javascript
 
 const Testiero = require('testiero')
-const testiero = new Testiero('https://ropsten.infura.io/<apiKey>')
+const testiero = new Testiero('https://ropsten.infura.io/<apiKey>', privateKey)
 
-//compile(name, file, contract)
-const output = testiero.compile('MyContractFile.sol', fs.readFileSync('<path>'), 'MyContract')
+const sourceFileString = fs.readFileSync('./MyContractFile.sol','utf8')
 
-//deploy(output, constructorArguments)
+//Compile it
+const output = testiero.compile(sourceFileString, 'MyContract')
+
+//Deploy on Ropsten (output, constructorArguments)
 testiero.deploy(output, [300000,"0x123.."])
 .then(address => {
   console.log(`deployed contract at address ${address}`)
