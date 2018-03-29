@@ -28,9 +28,11 @@ class testiero {
   compile(file, contract) {
     const input = { [contract]: file }
     const compiledContract = solc.compile({ sources: input })
-    const abi = JSON.parse(compiledContract.contracts[`${contract}:${contract}`].interface)
-    const bytecode = '0x' + compiledContract.contracts[`${contract}:${contract}`].bytecode
-    return { abi, bytecode, contract }
+    const output = compiledContract.contracts[`${contract}:${contract}`]
+    const gasEstimates = output.gasEstimates
+    const abi = JSON.parse(output.interface)
+    const bytecode = '0x' + output.bytecode
+    return { abi, bytecode, contract, gasEstimates }
   }
   
   
@@ -46,7 +48,8 @@ class testiero {
           gasLimit: this.web3.utils.toHex(4500000),
           gasPrice: this.web3.utils.toHex(10e9), // 10 Gwei
           from: this.deployer,
-        })).then((result) => resolve(result.contractAddress))
+        })).then(instance => this.web3.eth.getTransactionReceipt(instance.transactionHash))
+        .then((receipt) => resolve(receipt))
         .catch(reject)
     )
   }
